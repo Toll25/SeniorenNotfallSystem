@@ -13,7 +13,7 @@ public class Main {
         String username = "itp-project-1@ttn";
         String password = "NNSXS.CCEKXFMR74QKCMM7ZRJ2SXCLVDTKFTZXYGMKNLY.NEZDSO3KPCTOZ6M2A3J6RPLL4O6J635HKMJFEZ7VUQDBUZMWLWNQ";
         String clientid = "84847a26ff2d456aa422c99e348c9233";
-        String topic = "ITP/MQTTTest/message";
+        String topic = "itp-project-1/message";
         int qos = 0;
         try {
             MqttClient client = new MqttClient(broker, clientid, new MemoryPersistence());
@@ -42,9 +42,10 @@ public class Main {
 
             });
             client.connect(options);
-            client.subscribe(topic, qos);
+            //client.subscribe(topic, qos);
+            client.subscribeWithResponse(topic,qos);
 
-            String content = "Hawwo";
+            String content = "Hallo";
 
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
