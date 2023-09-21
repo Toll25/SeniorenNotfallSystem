@@ -8,14 +8,18 @@ public class Main {
 
 
     public static void main(String[] args) {
-        String broker = "tcp://test.mosquitto.org:1883";
+        String broker = "tcp://eu1.cloud.thethings.network:1883";
         MqttConnectOptions options = new MqttConnectOptions();
-        String clientid = "d4dec49b7fa7452c907898c19b766ace";
+        String username = "itp-project-1@ttn";
+        String password = "NNSXS.CCEKXFMR74QKCMM7ZRJ2SXCLVDTKFTZXYGMKNLY.NEZDSO3KPCTOZ6M2A3J6RPLL4O6J635HKMJFEZ7VUQDBUZMWLWNQ";
+        String clientid = "84847a26ff2d456aa422c99e348c9233";
         String topic = "ITP/MQTTTest/message";
         int qos = 0;
         try {
             MqttClient client = new MqttClient(broker, clientid, new MemoryPersistence());
             // connect options
+            options.setUserName(username);
+            options.setPassword(password.toCharArray());
             options.setConnectionTimeout(60);
             options.setKeepAliveInterval(60);
             // setup callback
