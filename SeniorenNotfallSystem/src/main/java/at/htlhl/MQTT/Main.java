@@ -42,7 +42,7 @@ public class Main {
 
             });
             client.connect(options);
-            //client.subscribe(topic, qos);
+            client.subscribe(topic, qos);
             client.subscribeWithResponse(topic,qos);
 
             String content = "Hallo";

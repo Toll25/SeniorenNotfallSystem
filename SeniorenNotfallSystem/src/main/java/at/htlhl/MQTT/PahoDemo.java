@@ -1,42 +1,42 @@
 package at.htlhl.MQTT;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.*;
 
 public class PahoDemo implements MqttCallback {
 
     MqttClient client;
 
+    static String username = "itp-project-1@ttn";
+    static String password = "NNSXS.PJMOQAXSX3JI6UGAQAP5E3S2T633VDXSVQLMRUQ.Q7SZXOGSKKQPZCYX45N2R52EXSI2CTYHTYBNC27CJNVPZN6SCZKA";
+
     public PahoDemo() {
     }
 
     public static void main(String[] args) {
-        new PahoDemo().doDemo();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setUserName(username);
+        options.setPassword(password.toCharArray());
+        options.setConnectionTimeout(60);
+        options.setKeepAliveInterval(60);
+        new PahoDemo().doDemo(options);
     }
 
-    public void doDemo() {
+    public void doDemo(MqttConnectOptions options) {
+
         try {
-            String username   = "itp-project-1@ttn";
-            String password   = "NNSXS.CCEKXFMR74QKCMM7ZRJ2SXCLVDTKFTZXYGMKNLY.NEZDSO3KPCTOZ6M2A3J6RPLL4O6J635HKMJFEZ7VUQDBUZMWLWNQ";
-            String serverurl  = "tcp://eu1.cloud.thethings.network:1883";
-            String clientId   = MqttClient.generateClientId();
-
-            MqttConnectOptions options = new MqttConnectOptions();
-            options.setCleanSession(true);
-            options.setUserName(username);
-            options.setPassword(password.toCharArray());
-
-            client = new MqttClient(serverurl, clientId, null);
+            client = new MqttClient("tcp://eu1.cloud.thethings.network:1883", "Sending");
             client.connect(options);
-
             client.setCallback(this);
-            client.subscribeWithResponse("itp-project-1/devices/#");
+            client.subscribe("#");
+            MqttMessage message = new MqttMessage();
+            message.setPayload("A single message from my computer fff"
+                    .getBytes());
+            Thread.sleep(1000);
+            client.publish("#", message);
         } catch (MqttException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
