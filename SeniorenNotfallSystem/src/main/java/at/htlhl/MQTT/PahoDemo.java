@@ -27,12 +27,15 @@ public class PahoDemo implements MqttCallback {
             client = new MqttClient("tcp://eu1.cloud.thethings.network:1883", "Sending");
             client.connect(options);
             client.setCallback(this);
-            client.subscribe("#");
+            if(client.isConnected()){
+                System.out.println("Bit CONNECTTTTT");
+            }
+            //client.subscribe("message");
             MqttMessage message = new MqttMessage();
             message.setPayload("A single message from my computer fff"
                     .getBytes());
             Thread.sleep(1000);
-            client.publish("#", message);
+            client.publish("message", message);
         } catch (MqttException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -43,19 +46,20 @@ public class PahoDemo implements MqttCallback {
     @Override
     public void connectionLost(Throwable cause) {
         // TODO Auto-generated method stub
-
+        System.out.println("###########Disconnected##############");
     }
 
     @Override
     public void messageArrived(String topic, MqttMessage message)
             throws Exception {
         System.out.println(message);
+        System.out.println("###########messageArrived##############");
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         // TODO Auto-generated method stub
-
+        System.out.println("###########deliveryComplete##############");
     }
 
 }
