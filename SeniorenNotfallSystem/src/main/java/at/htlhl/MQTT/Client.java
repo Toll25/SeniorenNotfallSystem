@@ -100,7 +100,6 @@ public class Client {
 
     public void respond(int code) {
         MqttMessage message = new MqttMessage();
-
         String payload = """
                 {
                   "downlinks": [
@@ -118,7 +117,6 @@ public class Client {
                 """;
         payload = payload.replace("${code}", String.valueOf(code));
         message.setPayload(payload.getBytes());
-        System.out.println(new String(message.getPayload()));
         try {
             client.publish(resTopic, message);
         } catch (MqttException e) {
