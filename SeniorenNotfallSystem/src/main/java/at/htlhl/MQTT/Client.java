@@ -89,10 +89,8 @@ public class Client {
 
                 if (response.equals("\"notfall\"")) {
                     System.out.println(ConsoleColors.RED + notfall + ConsoleColors.RESET);
-                    respond(1);
                 } else if (response.equals("\"ok\"")) {
                     System.out.println(ConsoleColors.GREEN + ok + ConsoleColors.RESET);
-                    respond(0);
                 }
             }
 
