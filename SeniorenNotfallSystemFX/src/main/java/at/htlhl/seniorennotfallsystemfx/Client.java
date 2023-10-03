@@ -1,11 +1,9 @@
-package at.htlhl.MQTT;
+package at.htlhl.seniorennotfallsystemfx;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
-import java.util.Scanner;
 
 public class Client {
     String serverURI = "tcp://eu1.cloud.thethings.network:1883";
@@ -21,26 +19,6 @@ public class Client {
     //topic on which to respond
     String resTopic = "v3/itp-project-1@ttn/devices/uno-0004a30b001c1b03/down/push";
 
-    // Output Strings
-    final String notfall = """
-            ███╗   ██╗ ██████╗ ████████╗███████╗ █████╗ ██╗     ██╗    \s
-            ████╗  ██║██╔═══██╗╚══██╔══╝██╔════╝██╔══██╗██║     ██║    \s
-            ██╔██╗ ██║██║   ██║   ██║   █████╗  ███████║██║     ██║    \s
-            ██║╚██╗██║██║   ██║   ██║   ██╔══╝  ██╔══██║██║     ██║    \s
-            ██║ ╚████║╚██████╔╝   ██║   ██║     ██║  ██║███████╗███████╗
-            ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝
-            """;
-
-    final String ok = """
-             ██████╗ ██╗  ██╗
-            ██╔═══██╗██║ ██╔╝
-            ██║   ██║█████╔╝\s
-            ██║   ██║██╔═██╗\s
-            ╚██████╔╝██║  ██╗
-             ╚═════╝ ╚═╝  ╚═╝
-                            \s
-            """;
-
     MqttClient client;
 
     public Client() {
@@ -52,21 +30,8 @@ public class Client {
     }
 
     public void init() {
-        Thread cli = new Thread(() -> {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("""
-                    Confirm Emergency(LED On): on
-                    Cancel Emergency Response(LED Off): off
-                    """);
-            while (true) {
-                switch (scanner.nextLine().toLowerCase().trim()) {
-                    case ("on") -> respond(1);
-                    case ("off") -> respond(0);
-                }
-            }
-        });
-        cli.start();
         MqttConnectOptions options = new MqttConnectOptions();
+
         options.setUserName(username);
         options.setPassword(password.toCharArray());
 
@@ -103,9 +68,9 @@ public class Client {
                 String response = (((jsonNode.get("uplink_message")).get("decoded_payload")).get("value")).toPrettyString();
 
                 if (response.equals("\"notfall\"")) {
-                    System.out.println(Main.RED + notfall + Main.RESET);
+                    Main.clientController.setEmergencyStatus("NOTFALL");
                 } else if (response.equals("\"ok\"")) {
-                    System.out.println(Main.GREEN + ok + Main.RESET);
+                    Main.clientController.setEmergencyStatus("OK");
                 }
             }
 
