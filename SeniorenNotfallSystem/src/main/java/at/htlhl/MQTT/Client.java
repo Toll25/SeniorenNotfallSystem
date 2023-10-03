@@ -19,6 +19,26 @@ public class Client {
     //topic on which to respond
     String resTopic = "v3/itp-project-1@ttn/devices/uno-0004a30b001c1b03/down/push";
 
+    // Output Strings
+    final String notfall = """
+                            ███╗   ██╗ ██████╗ ████████╗███████╗ █████╗ ██╗     ██╗    \s
+                            ████╗  ██║██╔═══██╗╚══██╔══╝██╔════╝██╔══██╗██║     ██║    \s
+                            ██╔██╗ ██║██║   ██║   ██║   █████╗  ███████║██║     ██║    \s
+                            ██║╚██╗██║██║   ██║   ██║   ██╔══╝  ██╔══██║██║     ██║    \s
+                            ██║ ╚████║╚██████╔╝   ██║   ██║     ██║  ██║███████╗███████╗
+                            ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝
+                            """;
+
+    final String ok = """
+                             ██████╗ ██╗  ██╗
+                            ██╔═══██╗██║ ██╔╝
+                            ██║   ██║█████╔╝\s
+                            ██║   ██║██╔═██╗\s
+                            ╚██████╔╝██║  ██╗
+                             ╚═════╝ ╚═╝  ╚═╝
+                                            \s
+                            """;
+
     MqttClient client;
 
     public Client() {
@@ -68,25 +88,10 @@ public class Client {
                 String response = (((jsonNode.get("uplink_message")).get("decoded_payload")).get("value")).toPrettyString();
 
                 if (response.equals("\"notfall\"")) {
-                    System.out.println("""
-                            ███╗   ██╗ ██████╗ ████████╗███████╗ █████╗ ██╗     ██╗    \s
-                            ████╗  ██║██╔═══██╗╚══██╔══╝██╔════╝██╔══██╗██║     ██║    \s
-                            ██╔██╗ ██║██║   ██║   ██║   █████╗  ███████║██║     ██║    \s
-                            ██║╚██╗██║██║   ██║   ██║   ██╔══╝  ██╔══██║██║     ██║    \s
-                            ██║ ╚████║╚██████╔╝   ██║   ██║     ██║  ██║███████╗███████╗
-                            ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝
-                            """);
+                    System.out.println(ConsoleColors.RED + notfall + ConsoleColors.RESET);
                     respond(1);
                 } else if (response.equals("\"ok\"")) {
-                    System.out.println("""
-                             ██████╗ ██╗  ██╗
-                            ██╔═══██╗██║ ██╔╝
-                            ██║   ██║█████╔╝\s
-                            ██║   ██║██╔═██╗\s
-                            ╚██████╔╝██║  ██╗
-                             ╚═════╝ ╚═╝  ╚═╝
-                                            \s
-                            """);
+                    System.out.println(ConsoleColors.GREEN + ok + ConsoleColors.RESET);
                     respond(0);
                 }
             }
