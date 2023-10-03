@@ -41,6 +41,13 @@ public class Client {
                             \s
             """;
 
+    // Reset
+    public static final String RESET = "\033[0m";  // Text Reset
+
+    // Regular Colors
+    public static final String RED = "\033[0;31m";     // RED
+    public static final String GREEN = "\033[0;32m";   // GREEN
+
     MqttClient client;
 
     public Client() {
@@ -66,6 +73,7 @@ public class Client {
             }
         });
         cli.start();
+
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());
@@ -103,9 +111,9 @@ public class Client {
                 String response = (((jsonNode.get("uplink_message")).get("decoded_payload")).get("value")).toPrettyString();
 
                 if (response.equals("\"notfall\"")) {
-                    System.out.println(Main.RED + notfall + Main.RESET);
+                    System.out.println(RED + notfall + RESET);
                 } else if (response.equals("\"ok\"")) {
-                    System.out.println(Main.GREEN + ok + Main.RESET);
+                    System.out.println(GREEN + ok + RESET);
                 }
             }
 
