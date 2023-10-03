@@ -13,10 +13,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        client.init();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("baseView.fxml"));
-        clientController=fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load(), 400, 200);
+        clientController=fxmlLoader.getController();
+        client.init();
         stage.setTitle("Senioren Notfall System");
         stage.setScene(scene);
         stage.show();

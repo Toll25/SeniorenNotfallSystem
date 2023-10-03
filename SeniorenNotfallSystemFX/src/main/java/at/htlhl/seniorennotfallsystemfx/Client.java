@@ -2,6 +2,7 @@ package at.htlhl.seniorennotfallsystemfx;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
@@ -68,9 +69,9 @@ public class Client {
                 String response = (((jsonNode.get("uplink_message")).get("decoded_payload")).get("value")).toPrettyString();
 
                 if (response.equals("\"notfall\"")) {
-                    Main.clientController.setEmergencyStatus("NOTFALL");
+                    Platform.runLater(() -> Main.clientController.setEmergencyStatus("NOTFALL"));
                 } else if (response.equals("\"ok\"")) {
-                    Main.clientController.setEmergencyStatus("OK");
+                    Platform.runLater(() -> Main.clientController.setEmergencyStatus("OK"));
                 }
             }
 
